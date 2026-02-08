@@ -11,7 +11,7 @@ const RaisedRequests = ({ visitor, onDelete, onRowClick }) => {
 
   const deleteRequest = async () => {
     try {
-      const res = await fetch("http://localhost:3000/visitordashboard/registrationform", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/visitordashboard/registrationform`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: visitor._id })
@@ -34,7 +34,7 @@ const RaisedRequests = ({ visitor, onDelete, onRowClick }) => {
     try {
       setLoadingQR(true);
       const res = await fetch(
-        `http://localhost:3000/visitordashboard/qrgenerate/${visitor._id}`,
+        `${import.meta.env.VITE_API_URL}/visitordashboard/qrgenerate/${visitor._id}`,
         {
           headers: {
             "Content-Type": "application/json"
@@ -63,7 +63,7 @@ const RaisedRequests = ({ visitor, onDelete, onRowClick }) => {
     <tr  className='bg-gray-50 p-5'>
       <td className='flex justify-center items-center m-auto'>
         <img
-          src={`http://localhost:3000/${visitor.photo}`}
+          src={`${import.meta.env.VITE_API_URL}/${visitor.photo}`}
           alt="visitor"
           className="w-15 h-15 object-cover rounded-lg border"
         />
