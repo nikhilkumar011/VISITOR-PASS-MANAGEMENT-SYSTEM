@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Navbar, Sidenav } from '../components/index.js'
 import { RaisedRequests,VisitorDetailsBox } from '../visitorComponents/index.js'
-import { AuthContext } from '../context/authContext'
+import { AuthContext } from '../context/authcontext'
 
 
 
