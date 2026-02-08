@@ -191,6 +191,30 @@ exports.updateStatus = async (req, res) => {
       text: `Hello ${user.firstname}, we regret to inform you that your visit request has been rejected.`
     });
   }
+  if (status === "Approved" && !user.emailSent) {
+
+  user.passId = "PASS_" + user._id;
+  user.qrCode = await generateQR(user.passId);
+  await user.save();
+
+  const pdfPath = generateVisitorPDF(user);
+
+  await sendMail({
+    to: user.email,
+    subject: "Your Visitor Pass",
+    text: `Hello ${user.firstname}, your visit request has been approved.
+Please find your visitor pass attached.`,
+    attachments: [
+      {
+        filename: "VisitorPass.pdf",
+        path: pdfPath
+      }
+    ]
+  });
+
+  user.emailSent = true;
+  await user.save();
+}
   res.status(200).send(user);
 }
 
