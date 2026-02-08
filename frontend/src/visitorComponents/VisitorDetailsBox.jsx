@@ -16,7 +16,7 @@ const VisitorDetailsBox = ({ visitor, onClose }) => {
 
         setLoadingQR(true);
         const res = await fetch(
-          `http://localhost:3000/visitordashboard/qrgenerate/${visitor._id}`,
+          `${import.meta.env.VITE_API_URL}/visitordashboard/qrgenerate/${visitor._id}`,
           {
             headers: {
               "Content-Type": "application/json"
@@ -55,7 +55,7 @@ const VisitorDetailsBox = ({ visitor, onClose }) => {
         </button>
         <div className="flex gap-4 items-center mb-6">
           <img
-            src={`http://localhost:3000/${visitor.photo}`}
+            src={`${import.meta.env.VITE_API_URL}/${visitor.photo}`}
             alt="Visitor"
             className="w-20 h-20 rounded-lg object-cover border"
           />
