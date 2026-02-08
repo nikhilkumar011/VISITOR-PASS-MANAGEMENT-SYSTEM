@@ -90,7 +90,8 @@ const sendMail = async ({ to, subject, text, attachments }) => {
 };
 const generateVisitorPDF = (visitor) => {
   const doc = new PDFDOC({ size: "A4", margin: 50 });
-  const filepath = `./pdfs/${visitor.passId}.pdf`
+  const filepath = path.join(pdfDir, `${visitor.passId}.pdf`);
+
   doc.pipe(fs.createWriteStream(filepath));
   doc.fontSize(20).text("Visitor Pass", { align: "center" });
   doc.fontSize(12);
