@@ -11,7 +11,7 @@ const createToken = (id) => {
 const sendMail = async ({ to, subject, text, attachments }) => {
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: "smtp.sendgrid.net",
       port: 465,
       secure: true,
       auth: {
