@@ -12,6 +12,12 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
   console.log("Uploads folder created:", uploadDir);
 }
+
+const pdfDir = path.join(__dirname, "../pdfs");
+if (!fs.existsSync(pdfDir)) {
+  fs.mkdirSync(pdfDir, { recursive: true });
+  console.log("PDFs folder created:", pdfDir);
+}
 app.use(cors({
   origin: "https://visitorpassmanagementsystem-taupe.vercel.app",
   methods: ["GET","POST","PUT","DELETE"],
