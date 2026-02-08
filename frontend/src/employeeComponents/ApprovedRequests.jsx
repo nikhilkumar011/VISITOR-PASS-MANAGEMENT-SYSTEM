@@ -1,7 +1,7 @@
 import React,{useState,useContext,useEffect} from 'react'
 import { Navbar, SidenavE } from '../components/index.js'
 import ApprovedCard from './ApprovedCard'
-import { AuthContext } from '../context/authContext'
+import { AuthContext } from '../context/authcontext'
 import PopupBox from './PopupBox'
 
 const ApprovedRequests = () => {
