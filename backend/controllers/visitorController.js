@@ -104,28 +104,37 @@ const sendMail = async ({ to, subject, text, attachments }) => {
 };
 
 const generateVisitorPDF = (visitor) => {
-  const doc = new PDFDOC({ size: "A4", margin: 50 });
-  const filepath = path.join(pdfDir, `${visitor.passId}.pdf`);
+  return new Promise((resolve, reject) => {
+    const doc = new PDFDOC({ size: "A4", margin: 50 });
+    const filepath = path.join(pdfDir, `${visitor.passId}.pdf`);
 
-  doc.pipe(fs.createWriteStream(filepath));
-  doc.fontSize(20).text("Visitor Pass", { align: "center" });
-  doc.fontSize(12);
-  doc.text(`Name: ${visitor.firstname} ${visitor.lastname}`);
-  doc.text(`Email: ${visitor.email}`);
-  doc.text(`Visiting Employee: ${visitor.visitingEmployee}`);
-  doc.text(`Date: ${visitor.date}`);
-  doc.text(`Time: ${visitor.time}`);
-  doc.text(`Reason: ${visitor.reason}`);
-  doc.moveDown();
-  doc.moveDown();
+    const stream = fs.createWriteStream(filepath);
+    doc.pipe(stream);
 
-  doc.font("Helvetica-Bold").text(`Pass ID: ${visitor.passId}`);
-  doc.moveDown();
-  const qr = visitor.qrCode.replace(/^data:image\/png;base64,/, "");
-  doc.image(Buffer.from(qr, "base64"), { width: 150 });
-  doc.end();
-  return filepath
-}
+    doc.fontSize(20).text("Visitor Pass", { align: "center" });
+    doc.fontSize(12);
+    doc.text(`Name: ${visitor.firstname} ${visitor.lastname}`);
+    doc.text(`Email: ${visitor.email}`);
+    doc.text(`Visiting Employee: ${visitor.visitingEmployee}`);
+    doc.text(`Date: ${visitor.date}`);
+    doc.text(`Time: ${visitor.time}`);
+    doc.text(`Reason: ${visitor.reason}`);
+    doc.moveDown();
+    doc.font("Helvetica-Bold").text(`Pass ID: ${visitor.passId}`);
+    doc.moveDown();
+
+    if (visitor.qrCode) {
+      const qr = visitor.qrCode.replace(/^data:image\/png;base64,/, "");
+      doc.image(Buffer.from(qr, "base64"), { width: 150 });
+    }
+
+    doc.end();
+
+    stream.on("finish", () => resolve(filepath));
+    stream.on("error", (err) => reject(err));
+  });
+};
+
 
 exports.qrGenerator = async (req, res) => {
   try {
@@ -197,7 +206,7 @@ exports.updateStatus = async (req, res) => {
   user.qrCode = await generateQR(user.passId);
   await user.save();
 
-  const pdfPath = generateVisitorPDF(user);
+  const pdfPath = await generateVisitorPDF(user);
 
   await sendMail({
     to: user.email,
