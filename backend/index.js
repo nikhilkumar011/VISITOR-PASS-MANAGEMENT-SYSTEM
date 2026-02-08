@@ -12,7 +12,11 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
   console.log("Uploads folder created:", uploadDir);
 }
-app.use(cors())
+app.use(cors({
+  origin: "https://visitorpassmanagementsystem-taupe.vercel.app",
+  methods: ["GET","POST","PUT","DELETE"],
+  credentials: true 
+}));
 app.use('/uploads', express.static('uploads'))
 
 
