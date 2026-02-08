@@ -9,22 +9,33 @@ const createToken = (id) => {
 
 
 const sendMail = async ({ to, subject, text, attachments }) => {
+  try {
     const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        }
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      connectionTimeout: 10000,
+      family: 4,
     });
 
     await transporter.sendMail({
-        from: `"Visitor Management" <${process.env.EMAIL_USER}>`,
-        to,
-        subject,
-        text,
-        attachments
+      from: `"Visitor Management" <${process.env.EMAIL_USER}>`,
+      to,
+      subject,
+      text,
+      attachments,
     });
+
+    console.log("Email sent to:", to);
+  } catch (err) {
+    console.error("Email sending failed:", err.message);
+  }
 };
+
 
 
 
