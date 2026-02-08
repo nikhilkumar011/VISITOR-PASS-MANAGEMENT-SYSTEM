@@ -12,7 +12,7 @@ const PopupBox = ({ visitor, onClose }) => {
                     ✕
                 </button>
                 <div className='p-2 flex gap-3 bg-gray-50'>
-                    <img src={`http://localhost:3000/${visitor.photo}`} alt="img" className='w-25' />
+                    <img src={`${import.meta.env.VITE_API_URL}/${visitor.photo}`} alt="img" className='w-25' />
                     <div className='flex flex-col'>
                     <h3 className='text-2xl text-gray-800 font-semibold'>{visitor.firstname} {visitor.lastname}</h3>
                     
