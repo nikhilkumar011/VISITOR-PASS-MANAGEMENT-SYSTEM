@@ -43,7 +43,11 @@ const ApprovedCard = ({ visitor, onDelete,onRowClick }) => {
                 <h3 className='text-gray-700'> {visitor.reason} </h3>
             </td>
             <td className='hidden md:table-cell'>
-                <h3 className='text-gray-700'>{visitor.date}</h3>
+                <h3 className='text-gray-700'>{new Date(visitor.date).toLocaleDateString('en-IN', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        })}</h3>
             </td>
             <td className='hidden md:table-cell'>
                 <h3 className='text-gray-700'> {visitor.time} </h3>
