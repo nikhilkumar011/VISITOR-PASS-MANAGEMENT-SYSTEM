@@ -25,7 +25,7 @@ const SecurityQrScanner = () => {
                     ✕
                 </button>
                 <div className='p-2 flex gap-3 bg-gray-50'>
-                    <img src={`http://localhost:3000/${visitor.photo}`} alt="img" className='w-25' />
+                    <img src={`${import.meta.env.VITE_API_URL}/${visitor.photo}`} alt="img" className='w-25' />
                     <div className='flex flex-col'>
                     <h3 className='text-2xl text-gray-800 font-semibold'>{visitor.firstname} {visitor.lastname}</h3>
                     <p className='text-gray-700'>id : {visitor._id}</p>
@@ -54,7 +54,7 @@ const SecurityQrScanner = () => {
                 </div>
                 <button
                 onClick={async ()=>{
-                  const res = await fetch("http://localhost:3000/visitordashboard/checkin",{
+                  const res = await fetch(`${import.meta.env.VITE_API_URL}/visitordashboard/checkin`,{
                     method:"POST",
                     headers:{"Content-Type":"application/json"},
                     body:JSON.stringify({id:visitor._id})
@@ -95,7 +95,7 @@ useEffect(() => {
     const cleanPassId = scannedData.trim();
 
     try {
-      const res = await fetch("http://localhost:3000/visitordashboard/verifyqr", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/visitordashboard/verifyqr`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ passId: cleanPassId })
