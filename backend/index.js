@@ -23,7 +23,7 @@ app.use(cors({
   methods: ["GET","POST","PUT","DELETE"],
   credentials: true 
 }));
-app.use('/uploads', express.static('uploads'))
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 app.use(express.json())
