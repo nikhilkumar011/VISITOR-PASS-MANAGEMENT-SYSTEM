@@ -1,7 +1,7 @@
 import React,{useContext} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle ,faHouse,faPlus,faRightFromBracket} from '@fortawesome/free-solid-svg-icons'
-import { AuthContext } from '../context/authContext'
+import { AuthContext } from '../context/authcontext'
 import {Link} from 'react-router-dom'
 
 const Sidenav = ({ isVisible }) => {
