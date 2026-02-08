@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Navbar, Sidenav } from '../components/index.js'
-import { AuthContext } from '../context/authContext'
+import { AuthContext } from '../context/authcontext'
 
 const RegistrationForm = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false)
