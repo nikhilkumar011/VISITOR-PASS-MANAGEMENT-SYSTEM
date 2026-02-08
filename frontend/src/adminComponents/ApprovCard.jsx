@@ -27,7 +27,7 @@ const ApprovCard = ({visitor,onDelete,onRowClick}) => {
     <tr className='bg-gray-50 p-5'>
             <td className='flex justify-center items-center m-auto'>
                 <img
-                    src={`http://localhost:3000/${visitor.photo}`}
+                    src={`${import.meta.env.VITE_API_URL}/${visitor.photo}`}
                     alt="visitor"
                     className="w-19 h-19 object-cover rounded-lg border flex items-center"
                 />
