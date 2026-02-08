@@ -5,7 +5,7 @@ import {faEye } from '@fortawesome/free-solid-svg-icons'
 
 const PendingRequests = ({ visitor, onDelete,onRowClick }) => {
     const handleStatusUpdate = async (newStatus) => {
-        const res = await fetch(`http://localhost:3000/visitordashboard/updatestatus/${visitor._id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/visitordashboard/updatestatus/${visitor._id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ status: newStatus })
@@ -23,7 +23,7 @@ const PendingRequests = ({ visitor, onDelete,onRowClick }) => {
         <tr  className='bg-gray-50 p-5 '>
             <td className='flex justify-center items-center m-auto'>
                 <img
-                    src={`http://localhost:3000/${visitor.photo}`}
+                    src={`${import.meta.env.VITE_API_URL}/${visitor.photo}`}
                     alt="visitor"
                     className="w-19 h-19 object-cover rounded-lg border"
                 />
