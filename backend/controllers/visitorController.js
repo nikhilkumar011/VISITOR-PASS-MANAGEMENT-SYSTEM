@@ -3,6 +3,9 @@ const visitorModel = require('../models/visitorModel.js')
 const PDFDOC = require('pdfkit')
 const fs = require('fs')
 const nodemailer = require("nodemailer");
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.EMAIL_PASS);
+
 const path = require("path");   
 
 const pdfDir = path.join(__dirname, "../pdfs");
@@ -80,26 +83,20 @@ async function generateQR(passId) {
 }
 const sendMail = async ({ to, subject, text, attachments }) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host: "smtp.sendgrid.net",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      connectionTimeout: 10000,
-      family: 4,
-    });
-
-    await transporter.sendMail({
-      from: `"Visitor Management" <${process.env.EMAIL_USER}>`,
+    const msg = {
       to,
+      from: process.env.EMAIL_USER, 
       subject,
       text,
-      attachments,
-    });
+      attachments: attachments?.map(att => ({
+        content: att.path ? require('fs').readFileSync(att.path).toString('base64') : att.content,
+        filename: att.filename,
+        type: 'application/pdf',
+        disposition: 'attachment',
+      })),
+    };
 
+    await sgMail.send(msg);
     console.log("Email sent to:", to);
   } catch (err) {
     console.error("Email sending failed:", err.message);
