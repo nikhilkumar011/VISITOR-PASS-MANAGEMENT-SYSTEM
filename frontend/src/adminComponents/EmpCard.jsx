@@ -7,7 +7,7 @@ import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 const EmpCard = ({user,onDelete}) => {
   const handleDelete = async() =>{
     try {
-        const res = await fetch("http://localhost:3000/user/deleteuser",{
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/user/deleteuser`,{
             method:"DELETE",
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify({id:user._id})
