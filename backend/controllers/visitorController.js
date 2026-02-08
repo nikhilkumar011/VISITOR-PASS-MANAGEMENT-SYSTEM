@@ -5,16 +5,36 @@ const fs = require('fs')
 const nodemailer = require("nodemailer");
 
 exports.addVisitorRequest = async (req, res) => {
-  const { firstname, lastname, email, mobile, date, time, reason, visitingEmployee } = req.body;
-  if (!firstname || !lastname || !email || !mobile || !reason || !date || !time || !visitingEmployee) {
-    return res.status(400).json({ error: "All fields are mandatory" })
+  try {
+    const { firstname, lastname, email, mobile, date, time, reason, visitingEmployee } = req.body;
+
+    if (!firstname || !lastname || !email || !mobile || !reason || !date || !time || !visitingEmployee) {
+      return res.status(400).json({ error: "All fields are mandatory" });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ error: "Photo is mandatory" });
+    }
+
+    const visitor = await visitorModel.create({
+      firstname,
+      lastname,
+      email,
+      mobile,
+      date,
+      time,
+      photo: req.file.path,
+      approvedStatus: "Pending",
+      reason,
+      visitingEmployee
+    });
+
+    res.status(200).json(visitor);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
   }
-  if (!req.file) {
-    return res.status(400).json({ error: "Photo is mandatory" })
-  }
-  let visitor = await visitorModel.create({ firstname: firstname, lastname: lastname, email: email, mobile: mobile, date: date, time: time, photo: req.file.path, approvedStatus: "Pending", reason: reason, visitingEmployee: visitingEmployee })
-  res.status(200).send(visitor);
-}
+};
 
 exports.getAllVisitors = async (req, res) => {
   const data = await visitorModel.find();
