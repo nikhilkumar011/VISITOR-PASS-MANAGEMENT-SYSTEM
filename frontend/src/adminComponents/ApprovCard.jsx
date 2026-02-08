@@ -5,7 +5,7 @@ import { faTrashCan,faEye } from '@fortawesome/free-solid-svg-icons'
 const ApprovCard = ({visitor,onDelete,onRowClick}) => {
   const deleteRequest = async () => {
         try {
-            const res = await fetch("http://localhost:3000/visitordashboard/registrationform", {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/visitordashboard/registrationform`, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id: visitor._id })
