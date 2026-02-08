@@ -31,7 +31,7 @@ const Security = () => {
   const getAllUsers = async ()=>{
     setLoading(true)
       try {
-        const res = await fetch("http://localhost:3000/user/getallusers");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/user/getallusers`);
 
         const data = await res.json();
 
