@@ -7,14 +7,14 @@ const createToken = (id) => {
     return jwt.sign({ id }, process.env.SECRET, { expiresIn: "1d" })
 }
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.EMAIL_PASS);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 const sendMail = async ({ to, subject, text, attachments }) => {
   try {
     const msg = {
       to,
-      from: process.env.EMAIL_USER, 
+      from: process.env.SENDGRID_FROM, 
       subject,
       text,
       attachments: attachments?.map(att => ({
