@@ -4,7 +4,7 @@ const PDFDOC = require('pdfkit')
 const fs = require('fs')
 const nodemailer = require("nodemailer");
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.EMAIL_PASS);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const path = require("path");   
 
@@ -85,7 +85,7 @@ const sendMail = async ({ to, subject, text, attachments }) => {
   try {
     const msg = {
       to,
-      from: process.env.EMAIL_USER, 
+      from: process.env.SENDGRID_FROM, 
       subject,
       text,
       attachments: attachments?.map(att => ({
