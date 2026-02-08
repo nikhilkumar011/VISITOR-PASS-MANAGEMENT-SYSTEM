@@ -36,7 +36,7 @@ const RegistrationForm = () => {
 
   const getUsers = async (req, res) => {
     try {
-      const res = await fetch('http://localhost:3000/user/getallusers')
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/getallusers`)
       const data = await res.json();
 
       if (res.ok) {
@@ -83,7 +83,7 @@ const RegistrationForm = () => {
       formData.append("photo", photo)
       formData.append('visitingEmployee', visitingEmployee)
 
-      let res = await fetch("http://localhost:3000/visitordashboard/registrationform", {
+      let res = await fetch(`${import.meta.env.VITE_API_URL}/visitordashboard/registrationform`, {
         method: "POST",
         body: formData
       })
