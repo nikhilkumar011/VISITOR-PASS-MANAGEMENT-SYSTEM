@@ -1,4 +1,4 @@
-import Signup from './signup.jsx'
+import Signup from './Signup.jsx'
 import Login from './Login.jsx'
 import Navbar from './Navbar.jsx'
 import Sidenav from './Sidenav.jsx'
