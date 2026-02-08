@@ -36,7 +36,7 @@ const VisitorsInside = () => {
     const getAllVisitors = async () => {
         setLoading(true);
         try {
-            const res = await fetch("http://localhost:3000/visitordashboard/registrationform");
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/visitordashboard/registrationform`);
             const data = await res.json();
 
             if (res.ok) {
