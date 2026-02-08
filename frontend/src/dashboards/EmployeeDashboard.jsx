@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Navbar, SidenavE } from '../components/index.js'
-import { AuthContext } from '../context/authContext'
+import { AuthContext } from '../context/authcontext'
 import PendingRequests from '../employeeComponents/PendingRequests'
 import PopupBox from '../employeeComponents/PopupBox'
 
