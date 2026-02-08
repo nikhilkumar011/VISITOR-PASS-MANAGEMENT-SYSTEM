@@ -5,6 +5,12 @@ const fs = require('fs')
 const nodemailer = require("nodemailer");
 const path = require("path");   
 
+const pdfDir = path.join(__dirname, "../pdfs");
+if (!fs.existsSync(pdfDir)) {
+  fs.mkdirSync(pdfDir, { recursive: true });
+  console.log("PDFs folder created:", pdfDir);
+}
+
 exports.addVisitorRequest = async (req, res) => {
   try {
     const { firstname, lastname, email, mobile, date, time, reason, visitingEmployee } = req.body;
