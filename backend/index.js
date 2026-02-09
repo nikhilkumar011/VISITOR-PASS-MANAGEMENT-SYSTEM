@@ -27,7 +27,10 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 app.use(express.json())
-dotenv.config();
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
+
 const PORT = process.env.PORT || 3000;
 
 Dbconnection();
