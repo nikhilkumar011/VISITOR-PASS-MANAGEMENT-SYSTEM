@@ -12,13 +12,14 @@ const Signup = () => {
     const [confirmPw,setConfirmPw] = useState("");
     const [name, setName] = useState("")
     const role = 'visitor'
-
+    const [loading,setLoading] = useState(false);
     const [error, setError] = useState("");
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
 
     const signup = async (e) => {
+        setLoading(true);
         e.preventDefault();
         try {
             if (!email || !password || !name) {
@@ -48,6 +49,7 @@ const Signup = () => {
                 }, 2000);
             }
             if (res.ok) {
+                setLoading(false);
                 login(email, data.token, role);
                 navigate("/visitordashboard");
             }
@@ -123,6 +125,9 @@ const Signup = () => {
                 {error && <p className='text-red-700 p-2'>{error}</p>}
                 <h2 className='text-gray-600'>Already have an account? <Link to='/login' className='text-blue-900'>Login</Link></h2>
             </div>
+            {loading && (
+              <p className="text-gray-500 text-sm mt-2">Logging In...</p>
+            )}
         </div>
     )
 }
