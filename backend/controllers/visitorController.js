@@ -10,35 +10,22 @@ const path = require("path");
 
 const pdfDir = path.join(__dirname, "../pdfs");
 if (!fs.existsSync(pdfDir)) {
-  fs.mkdirSync(pdfDir, { recursive: true });
+  fs.mkdirSync(pdfDir);
   console.log("PDFs folder created:", pdfDir);
 }
 
 exports.addVisitorRequest = async (req, res) => {
   try {
     const { firstname, lastname, email, mobile, date, time, reason, visitingEmployee } = req.body;
-
     if (!firstname || !lastname || !email || !mobile || !reason || !date || !time || !visitingEmployee) {
       return res.status(400).json({ error: "All fields are mandatory" });
     }
-
     if (!req.file) {
       return res.status(400).json({ error: "Photo is mandatory" });
     }
-
     const visitor = await visitorModel.create({
-      firstname,
-      lastname,
-      email,
-      mobile,
-      date,
-      time,
-      photo: req.file.path,
-      approvedStatus: "Pending",
-      reason,
-      visitingEmployee
+      firstname,lastname, email,mobile,date,time,photo: req.file.path, approvedStatus: "Pending",reason,visitingEmployee
     });
-
     res.status(200).json(visitor);
   } catch (err) {
     console.error(err);
@@ -48,24 +35,19 @@ exports.addVisitorRequest = async (req, res) => {
 
 exports.getAllVisitors = async (req, res) => {
   const data = await visitorModel.find();
-
   if (!data) {
     return res.status(400).json({ "message": "No available data" })
   }
-
   res.status(200).send(data);
 }
 
 exports.deleteVisitor = async (req, res) => {
   try {
     const { id } = req.body;
-
     const deletedVisitor = await visitorModel.findByIdAndDelete(id);
-
     if (!deletedVisitor) {
       return res.status(404).json({ message: "No data found to delete" });
     }
-
     return res.status(200).json({
       message: "Visitor deleted successfully",
       id: deletedVisitor._id
@@ -89,28 +71,24 @@ const sendMail = async ({ to, subject, text, attachments }) => {
       subject,
       text,
       attachments: attachments?.map(att => ({
-        content: att.path ? require('fs').readFileSync(att.path).toString('base64') : att.content,
+        content: att.path ? fs.readFileSync(att.path).toString('base64') : att.content,
         filename: att.filename,
         type: 'application/pdf',
         disposition: 'attachment',
       })),
     };
-
     await sgMail.send(msg);
     console.log("Email sent to:", to);
   } catch (err) {
     console.error("Email sending failed:", err.message);
   }
 };
-
 const generateVisitorPDF = (visitor) => {
   return new Promise((resolve, reject) => {
     const doc = new PDFDOC({ size: "A4", margin: 50 });
     const filepath = path.join(pdfDir, `${visitor.passId}.pdf`);
-
     const stream = fs.createWriteStream(filepath);
     doc.pipe(stream);
-
     doc.fontSize(20).text("Visitor Pass", { align: "center" });
     doc.fontSize(12);
     doc.text(`Name: ${visitor.firstname} ${visitor.lastname}`);
@@ -122,14 +100,11 @@ const generateVisitorPDF = (visitor) => {
     doc.moveDown();
     doc.font("Helvetica-Bold").text(`Pass ID: ${visitor.passId}`);
     doc.moveDown();
-
     if (visitor.qrCode) {
       const qr = visitor.qrCode.replace(/^data:image\/png;base64,/, "");
       doc.image(Buffer.from(qr, "base64"), { width: 150 });
     }
-
     doc.end();
-
     stream.on("finish", () => resolve(filepath));
     stream.on("error", (err) => reject(err));
   });
@@ -140,20 +115,15 @@ exports.qrGenerator = async (req, res) => {
   try {
     const { id } = req.params;
     const visitor = await visitorModel.findById(id);
-
     if (!visitor) {
-      return res.status(404).json({ message: "Visitor not found" });
-    }
-
+      return res.status(404).json({ message: "Visitor not found" }); }
     if (!visitor.passId || !visitor.qrCode) {
       visitor.passId = "PASS_" + visitor._id;
       visitor.qrCode = await generateQR(visitor.passId);
       await visitor.save();
     }
-
     if (!visitor.emailSent) {
       const pdfPath = generateVisitorPDF(visitor);
-
       await sendMail({
         to: visitor.email,
         subject: "Your Visitor Pass",
@@ -165,7 +135,6 @@ exports.qrGenerator = async (req, res) => {
           }
         ]
       });
-
       visitor.emailSent = true;
       await visitor.save();
     }
@@ -175,7 +144,6 @@ exports.qrGenerator = async (req, res) => {
       passId: visitor.passId,
       qrCode: visitor.qrCode
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "QR generation failed" });
@@ -186,11 +154,9 @@ exports.updateStatus = async (req, res) => {
   const { status } = req.body;
   const { id } = req.params;
   const user = await visitorModel.findById(id);
-
   if (!user) {
     return res.status(404).send("No user Found")
   }
-
   user.approvedStatus = status;
   await user.save();
   if(status === 'Rejected'){
@@ -201,13 +167,10 @@ exports.updateStatus = async (req, res) => {
     });
   }
   if (status === "Approved" && !user.emailSent) {
-
   user.passId = "PASS_" + user._id;
   user.qrCode = await generateQR(user.passId);
   await user.save();
-
   const pdfPath = await generateVisitorPDF(user);
-
   await sendMail({
     to: user.email,
     subject: "Your Visitor Pass",
@@ -220,7 +183,6 @@ Please find your visitor pass attached.`,
       }
     ]
   });
-
   user.emailSent = true;
   await user.save();
 }
@@ -262,10 +224,8 @@ exports.checkIn = async(req,res)=>{
       return res.status(400).json({ message: "Visitor not approved" });
     }
     if (visitor.checkedIn) {
-      return res.status(400).json({
-        success: false,
-        message: "Visitor already inside",
-      });
+      visitor.checkedIn = false;
+      return res.status(200).json({"message":"visitor checked out successfully"})
     }
     visitor.checkedIn = true;
     await visitor.save();
