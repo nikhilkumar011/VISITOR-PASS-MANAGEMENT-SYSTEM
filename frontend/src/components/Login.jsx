@@ -12,14 +12,16 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("admin");
     const [error, setError] = useState("");
+    const [loading,setLoading] = useState(false);
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
+    
 
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         if (!email || !password || !role) {
             setError("All Fields are Mandatory");
             setTimeout(() => {
@@ -42,6 +44,7 @@ const Login = () => {
                     }, 2000);
                 }
                 if (res.ok) {
+                    setLoading(false);
                     login(email, data.token, role);
                     if (role === "admin") navigate("/admindashboard");
                     if (role === "security") navigate("/securitydashboard");
@@ -60,7 +63,9 @@ const Login = () => {
         setIspwvisible((prev) => !prev)
     }
 
+
     return (
+       
         <div className='flex md:flex-row flex-col text-center justify-center'>
             <div className='bg-green-600 w-120 md:w-100 md:mt-30 text-center shadow-2xl rounded-none md:rounded-l-2xl'>
                 <div className="flex flex-col justify-center h-full p-10 text-white gap-5">
@@ -126,6 +131,9 @@ const Login = () => {
                 {error && <p className='text-red-700 p-2'>{error}</p>}
                 <h2 className='text-gray-600'>Don't have an account? <Link to='/signup' className='text-blue-900'>Sign Up</Link></h2>
             </div>
+              {loading && (
+              <p className="text-gray-500 text-sm mt-2">Logging In...</p>
+            )}
         </div>
     )
 }
