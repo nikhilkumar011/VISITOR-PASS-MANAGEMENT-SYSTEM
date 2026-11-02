@@ -14,29 +14,31 @@ const SidenavS = ({ isVisible }) => {
   return (
     <div
       className={`
-        fixed top-0 left-0 h-screen w-80 p-5 z-50
-        bg-white text-gray-600 shadow border border-gray-600
+        fixed top-0 left-0 z-50 flex h-screen w-72 flex-col border-r border-slate-200 p-5
+        bg-white text-slate-700 shadow-2xl shadow-slate-900/10
         transform transition-transform duration-300 ease-in-out
         ${isVisible ? 'translate-x-0' : '-translate-x-full'}
       `}
     >
-     <h1 className='text-lg font-sans'>  <FontAwesomeIcon icon={faUserCircle} /> {user} </h1>
-     <h3 className='text-lg font-sans mx-1'>( Security )</h3>
+     <div className="mb-5 rounded-2xl bg-slate-50 p-4">
+       <h1 className='truncate text-sm font-bold text-slate-900'><FontAwesomeIcon icon={faUserCircle} className="mr-2 text-emerald-700" />{user}</h1>
+       <h3 className='mt-1 pl-6 text-xs font-semibold uppercase tracking-widest text-slate-400'>Security account</h3>
+     </div>
 
 
     <div className='flex flex-col gap-5 p-4 mt-4'>
      <Link
      to='/securitydashboard'
-     className='border p-3 rounded cursor-pointer hover:bg-green-600 hover:text-white text-center'><FontAwesomeIcon icon={faCamera} /> Qr scanner</Link>
+     className='rounded-xl border border-transparent p-3 text-left font-medium text-slate-600 transition hover:border-emerald-100 hover:bg-emerald-50 hover:text-emerald-800'><FontAwesomeIcon icon={faCamera} className="mr-3 w-4" />QR scanner</Link>
      <Link
      to='/securitydashboard/visitorsinside'
-     className='border p-3 rounded cursor-pointer hover:bg-green-600 hover:text-white text-center'><FontAwesomeIcon icon={faPersonShelter} /> Visitors Inside</Link>
+     className='rounded-xl border border-transparent p-3 text-left font-medium text-slate-600 transition hover:border-emerald-100 hover:bg-emerald-50 hover:text-emerald-800'><FontAwesomeIcon icon={faPersonShelter} className="mr-3 w-4" />Visitors inside</Link>
     </div> 
 
 
      <button 
      onClick={LogOut}
-     className='bg-white text-red-600 p-2 rounded mt-105 w-full cursor-pointer border border-gray-600 hover:bg-red-600 hover:text-white shadow'>Logout <FontAwesomeIcon icon={faRightFromBracket} /></button>
+     className='mt-auto w-full cursor-pointer rounded-xl border border-rose-100 bg-white p-3 font-semibold text-rose-600 shadow-sm transition hover:bg-rose-50'>Logout <FontAwesomeIcon icon={faRightFromBracket} className="ml-2" /></button>
     </div>
   )
 }

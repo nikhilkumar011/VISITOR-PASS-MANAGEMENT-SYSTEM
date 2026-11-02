@@ -24,6 +24,7 @@ const Signup = () => {
         try {
             if (!email || !password || !name) {
                 setError("All Fields are Mandatory");
+                setLoading(false);
                 setTimeout(() => {
                     setError("");
                 }, 2000);
@@ -31,6 +32,7 @@ const Signup = () => {
             }
             if(password !== confirmPw){
                 setError("Passwords must be same");
+                setLoading(false);
                 setTimeout(() => {
                     setError("");
                 }, 2000);
@@ -44,6 +46,7 @@ const Signup = () => {
             const data = await res.json();
             if (!res.ok) {
                 setError(data.message);
+                setLoading(false);
                 setTimeout(() => {
                     setError("");
                 }, 2000);
@@ -55,16 +58,17 @@ const Signup = () => {
             }
         } catch (error) {
             console.log(error);
+            setLoading(false);
         }
     }
 
-    const showPassword = (e) => {
+    const showPassword = () => {
         setIspwvisible((prev) => !prev)
     }
 
     return (
-        <div className='flex flex-col md:flex-row text-center justify-center'>
-            <div className='bg-green-600 w-120 md:w-100 md:mt-30 text-center shadow-2xl rounded-none md:rounded-l-2xl'>
+        <div className='flex min-h-screen flex-col items-center justify-center px-4 py-8 text-center md:flex-row'>
+            <div className='w-full max-w-lg overflow-hidden rounded-t-3xl bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-700 text-center shadow-2xl md:min-h-[42rem] md:rounded-l-3xl md:rounded-tr-none'>
                 <div className="flex flex-col justify-center h-full p-10 text-white gap-5">
                     <h1 className="text-3xl font-bold flex items-center justify-center gap-3">
                         <FontAwesomeIcon icon={faUserCheck} />
@@ -89,24 +93,25 @@ const Signup = () => {
 
             </div>
 
-            <div className='bg-gray-100 p-3 w-120 shadow-2xl h-screen md:h-auto  md:mt-30 text-center rounded-r-2xl'>
-                <h1 className='font-bold text-2xl text-green-600 font-sans p-10'>Create an Account</h1>
-                <form action="" className='flex flex-col gap-5' onSubmit={signup}>
+            <div className='w-full max-w-lg rounded-b-3xl border border-slate-200 bg-white p-6 text-center shadow-2xl md:min-h-[42rem] md:rounded-bl-none md:rounded-r-3xl md:p-10'>
+                <h1 className='p-5 font-sans text-3xl font-bold tracking-tight text-slate-900'>Create your account</h1>
+                <p className="mb-7 text-sm text-slate-500">A few details and you’re ready to request a pass.</p>
+                <form className='flex flex-col gap-4' onSubmit={signup}>
                     <div className="text flex gap-4 justify-center">
                         <input
                             onChange={(e) => setName(e.target.value)}
-                            type="text" name="" id="name" placeholder='Full Name' className='peer w-full border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:border-green-600' />
+                            type="text" name="" id="name" placeholder='Full name' className='peer w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-left text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10' />
                     </div>
                     <div className="email flex gap-4 justify-center">
                         <input
                             onChange={(e) => setEmail(e.target.value)}
-                            type="email" name="" id="email" placeholder='Email' className='peer w-full border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:border-green-600' />
+                            type="email" name="" id="email" placeholder='Email address' className='peer w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-left text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10' />
                     </div>
                     <div className="password relative flex justify-center w-full m-auto">
                         <input
                             onChange={(e) => setPassword(e.target.value)}
                             type={ispwvisible ? "text" : "password"}
-                            name="" id="password" placeholder='Password' className='peer w-full  border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:border-green-600' />
+                            name="" id="password" placeholder='Password' className='peer w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-left text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10' />
                         {ispwvisible ? <FontAwesomeIcon onClick={showPassword} icon={faEye} className='right-3 absolute top-1/2 -translate-y-1/2 cursor-pointer text-gray-500' /> : <FontAwesomeIcon onClick={showPassword} icon={faEyeSlash} className='right-3 absolute top-1/2 -translate-y-1/2 cursor-pointer text-gray-500' />}
 
                     </div>
@@ -114,23 +119,22 @@ const Signup = () => {
                         <input
                             onChange={(e) => setConfirmPw(e.target.value)}
                             type={ispwvisible ? "text" : "password"}
-                            name="" id="password" placeholder='Confirm Password' className='peer w-full  border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:border-green-600' />
+                            name="" id="confirm-password" placeholder='Confirm password' className='peer w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-left text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10' />
 
                     </div>
 
-                    <div className="submit p-7">
-                        <button type="submit" className='bg-green-600 text-white px-5 py-2 text-lg rounded cursor-pointer hover:bg-green-700 shadow'>Sign Up</button>
+                    <div className="submit pt-3">
+                        <button type="submit" disabled={loading} className='flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-700 px-5 py-3.5 text-lg font-semibold text-white shadow-lg shadow-emerald-900/15 transition hover:bg-emerald-800 disabled:cursor-wait disabled:opacity-70'>
+                            {loading && <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />}
+                            {loading ? "Creating account..." : "Create account"}
+                        </button>
                     </div>
                 </form>
-                {error && <p className='text-red-700 p-2'>{error}</p>}
-                <h2 className='text-gray-600'>Already have an account? <Link to='/login' className='text-blue-900'>Login</Link></h2>
+                {error && <p role="alert" className='animate-slide-in rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-medium text-rose-700'>{error}</p>}
+                <h2 className='mt-5 text-sm text-slate-500'>Already have an account? <Link to='/login' className='font-semibold text-emerald-700 hover:text-emerald-800'>Sign in</Link></h2>
             </div>
-            {loading && (
-              <p className="text-gray-500 text-sm mt-2">Logging In...</p>
-            )}
         </div>
     )
 }
 
 export default Signup
-

@@ -7,6 +7,7 @@ const RegistrationForm = () => {
   const [photo, setPhoto] = useState(null)
   const [preview, setPreview] = useState(null)
   const [employees, setEmployees] = useState([])
+  const [submitting, setSubmitting] = useState(false)
 
   const SuccessToast = ({ message }) => {
     if (!message) return null;
@@ -34,7 +35,7 @@ const RegistrationForm = () => {
   }
 
 
-  const getUsers = async (req, res) => {
+  const getUsers = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/user/getallusers`)
       const data = await res.json();
@@ -70,6 +71,7 @@ const RegistrationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setSubmitting(true)
 
     try {
       const formData = new FormData()
@@ -105,6 +107,8 @@ const RegistrationForm = () => {
     }
     catch (error) {
       console.log(error)
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -116,7 +120,7 @@ const RegistrationForm = () => {
     if (employees.length > 0 && !visitingEmployee) {
       setVisitingEmployee(employees[0].email);
     }
-  }, [employees]);
+  }, [employees, visitingEmployee]);
 
 
 
@@ -133,19 +137,22 @@ const RegistrationForm = () => {
       <SuccessToast message={okmsg} />
       <ErrorToast message={error} />
 
-      <form onSubmit={handleSubmit} encType="multipart/form-data" className='bg-white min-h-full md:min-h-[75vh] max-h-full md:max-h-screen mb-2 flex flex-col w-full md:w-[80%] m-auto shadow-2xl p-10 rounded-2xl'>
-        <h1 className='text-2xl text-gray-700 font-bold font-sans'>Visitor's Information</h1>
-        <div className='flex flex-col md:flex-row gap-5 mt-5 p-2'>
-          <input onChange={(e) => setFirstName(e.target.value)} type="text" placeholder='First Name' className='w-full md:w-1/2 p-2 mt-3 border-b border-gray-400 outline-none' />
-          <input onChange={(e) => setLastName(e.target.value)} type="text" placeholder='Last Name' className='w-full md:w-1/2 p-2 mt-3 border-b outline-none border-gray-400' /></div>
+      <form onSubmit={handleSubmit} encType="multipart/form-data" className='mx-auto mb-8 flex w-[min(94%,64rem)] flex-col rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xl shadow-slate-900/5 sm:p-8 lg:p-10'>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">New visitor pass</p>
+        <h1 className='mt-2 font-sans text-3xl font-extrabold tracking-tight text-slate-900'>Visitor information</h1>
+        <p className="mt-2 text-sm text-slate-500">Share a few details to send your visit request for approval.</p>
+        <div className='mt-6 flex flex-col gap-5 sm:flex-row'>
+          <input onChange={(e) => setFirstName(e.target.value)} type="text" placeholder='First name' className='w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none placeholder:text-slate-400 focus:bg-white' />
+          <input onChange={(e) => setLastName(e.target.value)} type="text" placeholder='Last name' className='w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none placeholder:text-slate-400 focus:bg-white' />
+        </div>
 
-        <div className='flex flex-col md:flex-row gap-5 mt-5 p-2'>
+        <div className='mt-5 flex flex-col gap-5 sm:flex-row'>
 
-          <input onChange={(e) => setMobile(e.target.value)} type="number" placeholder='Mobile Number' className='w-full md:w-1/2 p-2 mt-3 border-b border-gray-400 outline-none' />
-          <div className="role text-gray-600 rounded-lg flex items-center">
-            <label htmlFor="employees">To whom are you visiting:</label>
+          <input onChange={(e) => setMobile(e.target.value)} type="tel" placeholder='Mobile number' className='w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none placeholder:text-slate-400 focus:bg-white sm:w-1/2' />
+          <div className="flex w-full flex-col gap-2 text-sm font-semibold text-slate-600 sm:w-1/2">
+            <label htmlFor="employees">Visiting employee</label>
 
-            <select value={visitingEmployee} name="employees" id="employees" onChange={(e) => setVisitingEmployee(e.target.value)}>
+            <select value={visitingEmployee} name="employees" id="employees" onChange={(e) => setVisitingEmployee(e.target.value)} className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 font-normal text-slate-700 outline-none focus:bg-white">
               {
                 employees.map((each) => (
                   <option key={each._id} value={each.email}>{each.name}</option>
@@ -156,28 +163,28 @@ const RegistrationForm = () => {
         </div>
 
 
-        <input onChange={(e) => setReason(e.target.value)} type='text' name="" id="" placeholder='Reason For visit' className='border-b outline-none w-[99%] flex justify-center m-auto mt-5  p-2 border-gray-400 ' />
-        <div className='flex flex-col md:flex-row justify-between gap-3 mb-15'>
-          <div className='flex gap-3 mt-4 items-center'>
-            <label htmlFor="Date" className='text-gray-700 flex items-center justify-center mt-1'>Date of visit :</label>
-            <input onChange={(e) => setDate(e.target.value)} type="date" name="" id="Date" className='w-50 md:w-100 p-2 mt-3 border-b outline-none border-gray-400' />
+        <input onChange={(e) => setReason(e.target.value)} type='text' placeholder='Reason for visit' className='mt-5 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none placeholder:text-slate-400 focus:bg-white' />
+        <div className='mb-8 mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2'>
+          <div className='flex flex-col gap-2'>
+            <label htmlFor="Date" className='text-sm font-semibold text-slate-600'>Date of visit</label>
+            <input onChange={(e) => setDate(e.target.value)} type="date" id="Date" className='w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:bg-white' />
           </div>
-          <div className='flex gap-3 mt-4 items-center'>
-            <label htmlFor="Time" className='text-gray-700 flex items-center justify-center mt-1'>Time of visit :</label>
-            <input onChange={(e) => setTime(e.target.value)} type="time" name="" id="Time" className='w-50 md:w-100 p-2 mt-3 border-b outline-none border-gray-400' />
+          <div className='flex flex-col gap-2'>
+            <label htmlFor="Time" className='text-sm font-semibold text-slate-600'>Time of visit</label>
+            <input onChange={(e) => setTime(e.target.value)} type="time" id="Time" className='w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:bg-white' />
 
           </div>
         </div>
         <div className="flex flex-col md:flex-row md:items-start gap-6">
           <div className="flex flex-col">
-            <label htmlFor="img" className="text-gray-700 font-medium mb-2">Your Photo:</label>
+            <label htmlFor="img" className="mb-2 text-sm font-semibold text-slate-600">Your photo</label>
             <input
               type="file"
               accept="image/*"
               onChange={handleImageChange}
               name="photo"
               id="img"
-              className="p-2 border-b border-gray-400 outline-none cursor-pointer"
+              className="max-w-full cursor-pointer rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600 file:mr-4 file:rounded-lg file:border-0 file:bg-emerald-50 file:px-3 file:py-2 file:font-semibold file:text-emerald-700 hover:file:bg-emerald-100"
             />
           </div>
 
@@ -185,15 +192,18 @@ const RegistrationForm = () => {
             <img
               src={preview}
               alt="Preview"
-              className="w-32 h-32 object-cover rounded-lg border"
+              className="h-32 w-32 rounded-2xl border border-slate-200 object-cover shadow-sm"
             />
           )}
         </div>
 
-        <div className='flex gap-3 mt-4 items-center'>
+        <div className='mt-4 flex items-center gap-3'>
 
 
-          <button type="submit" className='flex p-3 text-white bg-green-600 rounded-2xl w-full mt-5 justify-center text-center cursor-pointer hover:bg-green-800'>Submit</button>
+          <button type="submit" disabled={submitting} className='mt-5 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-emerald-700 p-3.5 text-center font-semibold text-white shadow-lg shadow-emerald-900/15 transition hover:bg-emerald-800 disabled:cursor-wait disabled:opacity-70'>
+            {submitting && <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />}
+            {submitting ? "Sending request..." : "Submit request"}
+          </button>
 
         </div>
 

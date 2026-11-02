@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react'
 import { Navbar, SidenavA } from '../components/index.js'
 import { AnalyticsCard } from '../adminComponents/index.js'
-const adminDashboard = () => {
+const AdminDashboard = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false)
   const [security,setSecurity] = useState([])
   const [employee,setEmployee] = useState([])
@@ -61,25 +61,26 @@ const adminDashboard = () => {
         />
       </div>
 
-      <div className='flex flex-col bg-white text-center gap-10 p-10 mt-10 rounded-2xl shadow-2xl md:w-[80%] m-auto'>
-         <h1 className="text-center text-5xl font-extrabold tracking-tight 
-                   bg-gradient-to-r from-indigo-500 to-purple-600 
-                   bg-clip-text text-transparent mb-12">
-      Analytics Overview
-    </h1>
-        <div className='flex flex-col md:flex-row justify-around gap-10'>
+      {loading && <div role="status" className="mx-auto flex min-h-40 items-center justify-center gap-3 text-sm font-semibold text-slate-500"><span className="h-5 w-5 animate-spin rounded-full border-2 border-slate-200 border-t-emerald-600" />Loading dashboard insights...</div>}
+      <main className='mx-auto my-8 flex w-[min(94%,80rem)] flex-col gap-8 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xl shadow-slate-900/5 sm:p-8 lg:p-10'>
+         <div className="text-left">
+           <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">Administrator workspace</p>
+           <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Analytics overview</h1>
+           <p className="mt-2 text-sm text-slate-500">A real-time snapshot of your visitor operations.</p>
+         </div>
+        <div className='grid grid-cols-1 gap-5 md:grid-cols-2'>
           <AnalyticsCard color="green" title="Employees" value={employee.length} />
           <AnalyticsCard color="red" title="Security Staff" value={security.length} />
         </div>
-        <div className='flex flex-col md:flex-row justify-around gap-10'>
+        <div className='grid grid-cols-1 gap-5 md:grid-cols-2'>
           <AnalyticsCard color="yellow" title="Inside visitors" value={visitorsInside.length} />
           <AnalyticsCard color="blue" title="Upcoming visitors" value={approvedVisitors.length}/> 
         </div>        
-      </div>
+      </main>
 
     </>
 
   )
 }
 
-export default adminDashboard
+export default AdminDashboard
