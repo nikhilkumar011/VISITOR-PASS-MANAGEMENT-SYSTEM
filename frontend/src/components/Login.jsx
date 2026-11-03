@@ -3,6 +3,7 @@ import { AuthContext } from '../context/authcontext'
 import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash, faUserCheck, faIdBadge, faShieldAlt, faClock } from '@fortawesome/free-solid-svg-icons'
+import ThemeToggle from './ThemeToggle'
 
 
 const Login = () => {
@@ -69,7 +70,8 @@ const Login = () => {
 
     return (
        
-        <div className='flex min-h-screen flex-col items-center justify-center px-4 py-8 text-center md:flex-row'>
+        <div className='relative flex min-h-screen flex-col items-center justify-center px-4 py-16 text-center md:flex-row md:py-8'>
+            <div className="fixed right-4 top-4 z-20"><ThemeToggle compact /></div>
             <div className='w-full max-w-lg overflow-hidden rounded-t-3xl bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-700 text-center shadow-2xl md:min-h-[38rem] md:rounded-l-3xl md:rounded-tr-none'>
                 <div className="flex flex-col justify-center h-full p-10 text-white gap-5">
                     <h1 className="text-3xl font-bold flex items-center justify-center gap-3">

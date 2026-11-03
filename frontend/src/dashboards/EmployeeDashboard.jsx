@@ -56,9 +56,9 @@ const EmployeeDashboard = () => {
    return (
     <>
     <div className="flex">
-      <SidenavE isVisible={isSidebarVisible} role="employee"/>
+      <SidenavE isVisible={isSidebarVisible} onClose={() => setIsSidebarVisible(false)} role="employee"/>
       <Navbar
-        
+        sidebarVisible={isSidebarVisible}
         setSidebarVisible={setIsSidebarVisible} search={setSearchBarText}
       />
     </div>

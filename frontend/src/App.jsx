@@ -1,6 +1,4 @@
-import { useState,useContext,useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useContext } from 'react'
 import './App.css'
 import { Signup, Login } from './components/index.js'
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
@@ -17,9 +15,6 @@ function App() {
     return user ? children : <Navigate to="/login" />;
   }
 
-    useEffect(() => {
-    document.documentElement.classList.remove("dark");
-  }, []);
   return (
     <>
       <Router>

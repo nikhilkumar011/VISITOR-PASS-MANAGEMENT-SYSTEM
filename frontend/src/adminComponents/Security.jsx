@@ -51,9 +51,9 @@ const Security = () => {
   return (
     <>
      <div className="flex mb-6">
-        <SidenavA isVisible={isSidebarVisible}  />
+        <SidenavA isVisible={isSidebarVisible} onClose={() => setIsSidebarVisible(false)} />
         <Navbar
-
+          sidebarVisible={isSidebarVisible}
           setSidebarVisible={setIsSidebarVisible} search={setSearchBarText}
         />
 

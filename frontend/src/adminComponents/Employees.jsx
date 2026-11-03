@@ -52,9 +52,9 @@ const Employees = () => {
   return (
     <>
      <div className="flex mb-6">
-        <SidenavA isVisible={isSidebarVisible} role="visitor" />
+        <SidenavA isVisible={isSidebarVisible} onClose={() => setIsSidebarVisible(false)} role="visitor" />
         <Navbar
-
+          sidebarVisible={isSidebarVisible}
           setSidebarVisible={setIsSidebarVisible} search={setSearchBarText}
         />
 

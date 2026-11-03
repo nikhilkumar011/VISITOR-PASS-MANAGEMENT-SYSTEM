@@ -127,9 +127,9 @@ const RegistrationForm = () => {
   return (
     <>
       <div className="flex mb-6">
-        <Sidenav isVisible={isSidebarVisible} role="visitor" />
+        <Sidenav isVisible={isSidebarVisible} onClose={() => setIsSidebarVisible(false)} role="visitor" />
         <Navbar
-
+          sidebarVisible={isSidebarVisible}
           setSidebarVisible={setIsSidebarVisible}
         />
 

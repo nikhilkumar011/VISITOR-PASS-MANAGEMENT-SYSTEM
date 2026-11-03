@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "flowbite-react/plugin/tailwindcss";
 @source "../.flowbite-react/class-list.json";
+@custom-variant dark (&:where(html.dark, html.dark *));
 
 :root {
   color-scheme: light;
@@ -21,9 +22,11 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  color: #17211f;
   background:
     radial-gradient(ellipse at top left, rgb(16 185 129 / 6%), transparent 34rem),
     #f4f7f6;
+  transition: color 180ms ease, background-color 180ms ease;
 }
 
 button,
@@ -31,6 +34,71 @@ input,
 select,
 textarea {
   font: inherit;
+}
+
+html.dark,
+html.dark body {
+  color-scheme: dark;
+  color: #e2e8f0;
+  background: #0b1220;
+}
+
+html.dark body {
+  background:
+    radial-gradient(ellipse at top left, rgb(16 185 129 / 8%), transparent 34rem),
+    #0b1220;
+}
+
+html.dark [class~="bg-white"],
+html.dark [class~="bg-gray-50"],
+html.dark [class~="bg-gray-100"],
+html.dark [class~="bg-slate-50"],
+html.dark [class~="bg-slate-100"] {
+  background-color: #111c2c;
+}
+
+html.dark [class~="text-black"],
+html.dark [class~="text-gray-900"],
+html.dark [class~="text-gray-800"],
+html.dark [class~="text-gray-700"],
+html.dark [class~="text-slate-900"],
+html.dark [class~="text-slate-800"],
+html.dark [class~="text-slate-700"],
+html.dark [class~="text-slate-600"] {
+  color: #e2e8f0;
+}
+
+html.dark [class~="text-gray-600"],
+html.dark [class~="text-gray-500"],
+html.dark [class~="text-slate-500"],
+html.dark [class~="text-slate-400"] {
+  color: #a7b3c4;
+}
+
+html.dark [class~="border-gray-300"],
+html.dark [class~="border-gray-400"],
+html.dark [class~="border-gray-500"],
+html.dark [class~="border-slate-200"],
+html.dark [class~="border-slate-300"] {
+  border-color: #334155;
+}
+
+html.dark input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+html.dark select,
+html.dark textarea {
+  border-color: #334155;
+  background-color: #111c2c;
+  color: #e2e8f0;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #8290a3;
+}
+
+html.dark option {
+  background-color: #111c2c;
+  color: #e2e8f0;
 }
 
 button,

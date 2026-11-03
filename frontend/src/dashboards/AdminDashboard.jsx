@@ -54,9 +54,9 @@ const AdminDashboard = () => {
   return (
     <>
       <div className="flex">
-        <SidenavA isVisible={isSidebarVisible} role="admin" />
+        <SidenavA isVisible={isSidebarVisible} onClose={() => setIsSidebarVisible(false)} role="admin" />
         <Navbar
-
+          sidebarVisible={isSidebarVisible}
           setSidebarVisible={setIsSidebarVisible}
         />
       </div>

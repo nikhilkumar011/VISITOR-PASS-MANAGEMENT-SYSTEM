@@ -54,9 +54,9 @@ const ApprovedRequests = () => {
   return (
     <>
        <div className="flex mb-6">
-        <SidenavE isVisible={isSidebarVisible} role="visitor" />
+        <SidenavE isVisible={isSidebarVisible} onClose={() => setIsSidebarVisible(false)} role="visitor" />
         <Navbar
-
+          sidebarVisible={isSidebarVisible}
           setSidebarVisible={setIsSidebarVisible} search={setSearchBarText}
         />
 

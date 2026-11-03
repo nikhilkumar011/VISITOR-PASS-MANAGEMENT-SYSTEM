@@ -56,9 +56,9 @@ const VisitorDashboard = () => {
 
   return (<>
     <div className="flex">
-      <Sidenav isVisible={isSidebarVisible} role="visitor" />
+      <Sidenav isVisible={isSidebarVisible} onClose={() => setIsSidebarVisible(false)} role="visitor" />
       <Navbar
-
+        sidebarVisible={isSidebarVisible}
         setSidebarVisible={setIsSidebarVisible} search={setSearchBarText}
       />
 

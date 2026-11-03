@@ -67,6 +67,11 @@ table {
   box-shadow: 0 12px 35px rgb(15 23 42 / 7%);
 }
 
+.overflow-x-auto > table {
+  min-width: 42rem;
+  overscroll-behavior-x: contain;
+}
+
 table th {
   padding: 0.8rem 1rem;
   color: #64748b;
@@ -128,6 +133,51 @@ textarea:focus {
   padding: 1.5rem;
   box-shadow: 0 25px 80px rgb(15 23 42 / 28%);
   animation: slide-in 180ms ease-out both;
+}
+
+html.dark table {
+  border-color: #263449;
+  background: #111c2c;
+  box-shadow: 0 12px 35px rgb(0 0 0 / 24%);
+}
+
+html.dark table th {
+  color: #a7b3c4;
+}
+
+html.dark table td {
+  background: #172338;
+  color: #dbe5f1;
+}
+
+html.dark table tbody tr:hover td {
+  background: #17352f;
+}
+
+html.dark .modal-panel {
+  border-color: #334155;
+  background: #111c2c;
+  color: #e2e8f0;
+}
+
+@media (max-width: 640px) {
+  .overflow-x-auto {
+    max-width: 100vw;
+    padding: 0 0.75rem 0.75rem;
+  }
+
+  .overflow-x-auto > table {
+    width: 42rem;
+    margin: 0.75rem 0;
+    padding: 0.75rem;
+    border-radius: 1rem;
+  }
+
+  .modal-panel {
+    max-height: calc(100dvh - 2rem);
+    padding: 1.125rem;
+    border-radius: 1.25rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

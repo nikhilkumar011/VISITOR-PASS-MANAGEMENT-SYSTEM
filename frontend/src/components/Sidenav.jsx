@@ -4,7 +4,7 @@ import { faUserCircle ,faHouse,faPlus,faRightFromBracket} from '@fortawesome/fre
 import { AuthContext } from '../context/authcontext'
 import {Link} from 'react-router-dom'
 
-const Sidenav = ({ isVisible }) => {
+const Sidenav = ({ isVisible, onClose }) => {
     const {user,logout} = useContext(AuthContext);
 
     const LogOut = ()=>{
@@ -14,8 +14,8 @@ const Sidenav = ({ isVisible }) => {
   return (
     <div
       className={`
-        fixed top-0 left-0 z-50 flex h-screen w-72 flex-col border-r border-slate-200
-        bg-white p-5 text-slate-700 shadow-2xl shadow-slate-900/10
+        fixed inset-y-0 left-0 z-50 flex h-dvh max-h-dvh min-h-0 w-[min(18rem,88vw)] flex-col overflow-hidden border-r border-slate-200
+        bg-white p-4 text-slate-700 shadow-2xl shadow-slate-900/10 sm:p-5
         transform transition-transform duration-300 ease-in-out
         ${isVisible ? 'translate-x-0' : '-translate-x-full'}
       `}
@@ -25,18 +25,20 @@ const Sidenav = ({ isVisible }) => {
        <h3 className='mt-1 pl-6 text-xs font-semibold uppercase tracking-widest text-slate-400'>Visitor account</h3>
      </div>
 
-    <div className='flex flex-col gap-5 p-4 mt-4'>
+    <nav className='mt-2 flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain p-1'>
      <Link
+     onClick={onClose}
      to='/visitordashboard'
      className='rounded-xl border border-transparent p-3 text-left font-medium text-slate-600 transition hover:border-emerald-100 hover:bg-emerald-50 hover:text-emerald-800'><FontAwesomeIcon icon={faHouse} className="mr-3 w-4" />Raised Requests</Link>
      <Link
+     onClick={onClose}
      to='/visitordashboard/registrationForm'
      className='rounded-xl border border-transparent p-3 text-left font-medium text-slate-600 transition hover:border-emerald-100 hover:bg-emerald-50 hover:text-emerald-800'><FontAwesomeIcon icon={faPlus} className="mr-3 w-4" />Add a new request</Link>
-    </div> 
+    </nav>
 
      <button 
      onClick={LogOut}
-     className='mt-auto w-full cursor-pointer rounded-xl border border-rose-100 bg-white p-3 font-semibold text-rose-600 shadow-sm transition hover:bg-rose-50'>Logout <FontAwesomeIcon icon={faRightFromBracket} className="ml-2" /></button>
+     className='mt-3 w-full shrink-0 cursor-pointer rounded-xl border border-rose-100 bg-white p-3 font-semibold text-rose-600 shadow-sm transition hover:bg-rose-50 dark:border-rose-900/70 dark:bg-slate-900 dark:text-rose-300 dark:hover:bg-rose-950/40'>Logout <FontAwesomeIcon icon={faRightFromBracket} className="ml-2" /></button>
     </div>
   )
 }

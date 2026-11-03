@@ -57,9 +57,9 @@ const VisitorsInside = () => {
     return (
         <>
             <div className="flex">
-                <SidenavS isVisible={isSidebarVisible} role="security" />
+                <SidenavS isVisible={isSidebarVisible} onClose={() => setIsSidebarVisible(false)} role="security" />
                 <Navbar
-
+                    sidebarVisible={isSidebarVisible}
                     setSidebarVisible={setIsSidebarVisible} search={setSearchBarText}
                 />
 
